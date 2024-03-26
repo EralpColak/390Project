@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Login</title>
     <style>
         body, html {
             height: 100%;
@@ -40,7 +40,7 @@
             color: #2D4059; /* Dark gray text color */
         }
 
-        .registration-form {
+        .login-form {
             max-width: 400px;
             width: 80%;
             background: #F7FBFC; /* White background */
@@ -48,15 +48,16 @@
             padding: 20px;
             margin: 0 auto;
         }
-        .registration-form a {
+        .login-form a {
             display: block;
             text-align: left;
             margin-top: 10px;
             color: #2D4059; /* Dark gray text color */
         }
-        .registration-form a:hover {
+        .login-form a:hover {
             color: #FA7070; /* Light pink background */
         }
+
 
         h2 {
             text-align: center;
@@ -100,17 +101,17 @@
     </div>
 
     <div class="right-side">
-        <div class="registration-form">
-            <h2>Register</h2>
-            <form action="registration_process.php" method="post">
+        <div class="login-form">
+            <h2>Login</h2>
+            <form action="login_process.php" method="post">
                 <label for="tc">T.C.:</label>
                 <input type="text" id="tc" name="tc" required>
 
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
 
-                <input type="submit" value="Register">
-                <a href="login.html">Log in, if you have already an account.</a>
+                <input type="submit" value="Login">
+                <a href="390index.html">Register, if you don't have an account.</a>
             </form>
         </div>
     </div>
