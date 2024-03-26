@@ -4,29 +4,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
-<body>
+    <title>Register</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
+            display: flex;
+            justify-content: space-between;
         }
 
-        .container {
-            max-width: 400px;
-            margin: 20px auto;
-            background: #fff;
+        .left-side {
+            flex: 1;
+            background-color: #ffd9e5; /* Light pink background */
+            height: 100vh; /* Adjust as needed */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .left-side img {
+            width: 80vh;
+            height: auto;
+        }
+
+        .right-side {
+            flex: 1;
+            background-color: #ffffff; /* White background */
             padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333333; /* Dark gray text color */
+        }
+
+        .registration-form {
+            max-width: 400px;
+            background: #ffffff; /* White background */
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
         }
 
         h2 {
             text-align: center;
+            color: #333333; /* Dark gray text color */
         }
 
         label {
@@ -58,11 +80,16 @@
             background-color: #45a049;
         }
     </style>
-    </head>
+</head>
 
-    <body>
+<body>
 
-        <div class="container">
+    <div class="left-side">
+        <img src="/doctor_patient.png" alt="hospital_img">
+    </div>
+
+    <div class="right-side">
+        <div class="registration-form">
             <h2>Register</h2>
             <form action="registration_process.php" method="post">
                 <label for="tc">T.C.:</label>
@@ -77,8 +104,8 @@
                 <input type="submit" value="Register">
             </form>
         </div>
+    </div>
 
-
-    </body>
+</body>
 
 </html>
