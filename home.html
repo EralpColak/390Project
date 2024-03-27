@@ -11,6 +11,8 @@
             font-family: Arial, sans-serif;
             background-color: #f5f5f5; /* Light background */
             min-height: 100vh;
+            background-image: url("bg.png");
+            background-size: cover;
         }
 
         nav {
@@ -53,7 +55,7 @@
         .container {
             display: grid;
             grid-template-rows: auto auto auto;
-            grid-template-columns: repeat(6, 1fr);
+            grid-template-columns: repeat(18, 1fr);
             gap: 20px;
             padding: 20px;
         }
@@ -74,14 +76,17 @@
         }
 
         .card:nth-child(1),
+        .card:nth-child(3) {
+            grid-column:  3 / span 7; /* Adjusted column span */
+        }
+
         .card:nth-child(2),
-        .card:nth-child(3),
         .card:nth-child(4) {
-            grid-column: span 3;
+            grid-column:   10 / span 7; /* Adjusted column span */
         }
 
         .card:last-child {
-            grid-column: 2 / -2; /* Span from column2 to second from last column */
+            grid-column:  6 /span 8; /* Centered at the middle */
         }
 
         .card:hover {
@@ -119,7 +124,7 @@
         <a href="page2.html" class="card">Tahlillerim</a>
         <a href="page3.html" class="card">Randevularım</a>
         <a href="page4.html" class="card">Hastalıklarım</a>
-        <a href="page5.html" class="card">Neyim Var</a>
+        <a href="page5.html" class="card" style="background-color: #2D4059;">Neyim Var ?</a>
     </div>
 
 </body>
