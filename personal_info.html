@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kişisel Bilgilerim</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5; /* Light background */
+            min-height: 100vh;
+            background-image: url("bg.png");
+            background-size: cover;
+        }
+
+        nav {
+            background-color: #f5f5f5; /* Light background */
+            color: #2D4059; /* Dark blue */
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Box shadow for separation */
+        }
+
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-logo img {
+            height: 80px; /* Adjust height as needed */
+            vertical-align: middle;
+            margin-right: 10px; /* Add margin to separate logo and text */
+        }
+
+        .navbar-brand {
+            font-size: 24px; /* Adjust font size */
+            font-weight: bold; /* Bold text */
+        }
+
+        .navbar-buttons {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-buttons a {
+            color: #2D4059; /* Dark blue */
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .container {
+            width: 50%;
+            padding: 40px;
+            background-color: #fff; /* White background */
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Box shadow */
+            margin-top: 20px; /* Add margin from navbar */
+            margin: 40px auto 0; /* Add margin from top */
+        }
+
+        h2 {
+            text-align: center; /* Align title to the left */
+            color: #2D4059; /* Dark blue */
+            font-size: 36px; /* Adjust font size */
+            font-weight: bold; /* Bold text */
+            margin-bottom: 20px; /* Add margin for spacing */
+        }
+
+        .info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center; /* Align items vertically */
+            margin-bottom: 20px;
+            padding-bottom: 2px;
+            border-bottom: 1px solid #ddd; /* Add border between info sections */
+        }
+
+        .info:last-child {
+            border-bottom: none; /* Remove border from the last info section */
+        }
+
+        .info span {
+            font-weight: bold;
+            margin-right: 10px; /* Add margin between title and info */
+            flex: 1; /* Occupy remaining space */
+            text-align: left; /* Right-align text */
+        }
+
+        .info p {
+            margin: 0;
+            flex: 1; /* Occupy remaining space */
+            text-align: left; /* Right-align text */
+        }
+
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: #ccc; /* Light gray background */
+            margin: 0 auto 20px; /* Center the image and add margin */
+            overflow: hidden; /* Hide overflow content */
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Maintain aspect ratio */
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="navbar-logo">
+            <img src="CareConnect.png" alt="Your Logo">
+            <span class="navbar-brand">CareConnect</span>
+        </div>
+        <div class="navbar-buttons">
+            <a href="#">Giriş</a>
+            <a href="#">Kayıt</a>
+            <a href="#">Çıkış</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="profile-image">
+            <img src="patient_placeholder.jpg" alt="Patient's Picture">
+        </div>
+        <h2>Kişisel Bilgilerim</h2>
+
+        <div class="info">
+            <span>Ad:</span>
+            <p>John</p>
+        </div>
+        <div class="info">
+            <span>Soyad:</span>
+            <p>Doe</p>
+        </div>
+        <div class="info">
+            <span>Yaş:</span>
+            <p>30</p>
+        </div>
+        <div class="info">
+            <span>Cinsiyet:</span>
+            <p>Erkek</p>
+        </div>
+        <div class="info">
+            <span>Telefon:</span>
+            <p>1234567890</p>
+        </div>
+        <div class="info">
+            <span>E-posta:</span>
+            <p>john@example.com</p>
+        </div>
+        <div class="info">
+            <span>Adres:</span>
+            <p>123 Street, City, Country</p>
+        </div>
+    </div>
+
+</body>
+
+</html>
