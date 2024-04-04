@@ -14,7 +14,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($user) {
             // If login successful, redirect to the main page
-            header("Location: ../main_page.php");
+            session_start();
+            $_SESSION['tc'] = $tc;
+            header("Location: ../homepage.php");
             exit();
         } else {
             // If login failed, redirect back to the login page with an error message

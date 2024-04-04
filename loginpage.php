@@ -107,7 +107,7 @@
 <body>
 
     <div class="left-side">
-        <img src="doctor_patient.png" alt="hospital_img">
+        <img src="resimler/doctor_patient.png" alt="hospital_img">
     </div>
 
     <div class="right-side">
