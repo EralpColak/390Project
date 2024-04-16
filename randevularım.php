@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage</title>
+    <title>Randevularım</title>
     <style>
         body {
             margin: 0;
@@ -12,7 +12,7 @@
             background-color: #f5f5f5;
             /* Light background */
             min-height: 100vh;
-            background-image: url("resimler/bg.png");
+            background-image: url("bg.png");
             background-size: cover;
         }
 
@@ -97,10 +97,11 @@
             /* Adjusted column span */
         }
 
-        .card:last-child {
-            grid-column: 6 /span 8;
+        .card:nth-child(5) {
+            grid-column: 6 / span 8;
             /* Centered at the middle */
         }
+
 
         .card:hover {
             transform: scale(1.05);
@@ -125,23 +126,22 @@
 
     <nav>
         <div class="navbar-logo">
-            <img src="resimler/CareConnect.png" alt="Your Logo">
+            <a href="homepage.php"><img src="resimler/CareConnect.png" alt="Your Logo"></a>
             <span class="navbar-brand">CareConnect</span>
         </div>
         <div class="navbar-buttons">
-            <a href="loginpage.php">Çıkış</a>
 
+            <a href="loginpage.php">Çıkış</a>
         </div>
     </nav>
 
-    <h2>Ana Sayfa</h2> <!-- Changed h3 to h2 -->
+    <h2>Randevularım</h2>
 
     <div class="container">
-        <a href="kisisel_bilgilerim.php" class="card">Kişisel Bilgilerim</a>
-        <a href="" class="card">Tahlillerim</a>
-        <a href="randevularım.php" class="card">Randevularım</a>
-        <a href="page4.html" class="card">Hastalıklarım</a>
-        <a href="page5.html" class="card" style="background-color: #2D4059;">Neyim Var ?</a>
+
+        <a href="yeni_randevu.php" class="card">Yeni Randevu</a>
+        <a href="randevu_detay.php" class="card">Randevularım</a>
+
     </div>
 
 </body>
