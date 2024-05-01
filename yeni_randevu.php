@@ -11,49 +11,142 @@ if (!isset($_SESSION['tc'])) {
 $conn = mysqli_connect('localhost', 'root', '', 'database_390');
 if (!$conn) {
     echo 'Connection error: ' . mysqli_connect_error();
+    exit();
 }
 
-// If the form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $tc = $_SESSION['tc'];
-    $doktor_ıd = $_POST['doktor_ıd'];
+// Fetch cities from the database
+$cities_query = "SELECT DISTINCT sehir FROM hastane";
+$cities_result = mysqli_query($conn, $cities_query);
+?>
 
-    // Insert the new appointment into the database
-    $sql = "INSERT INTO randevular (tc, doktor_ıd) VALUES (?, ?)";
-    $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "ss", $tc, $doktor_ıd);
-    mysqli_stmt_execute($stmt);
+<!DOCTYPE html>
+<html lang="en">
 
-    // Check if the appointment was successfully added
-    if (mysqli_stmt_affected_rows($stmt) > 0) {
-        echo "Appointment created successfully!";
-    } else {
-        echo "Error creating appointment!";
-    }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Appointment</title>
+    <script>
+        function showHospitals() {
+            var cityDropdown = document.getElementById("city");
+            var hospitalDropdown = document.getElementById("hospital");
+            var departmentDropdown = document.getElementById("department");
+            var doctorDropdown = document.getElementById("doctor");
+            var selectedCity = cityDropdown.value;
 
-    // Close the prepared statement
-    mysqli_stmt_close($stmt);
-}
+            if (selectedCity !== "") {
+                // Send AJAX request to fetch hospitals for the selected city
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        hospitalDropdown.innerHTML = xhr.responseText;
+                        hospitalDropdown.disabled = false;
+                        departmentDropdown.disabled = true;
+                        doctorDropdown.disabled = true;
+                    }
+                };
+                xhr.open("GET", "fetch_hospitals.php?city=" + selectedCity, true);
+                xhr.send();
+            } else {
+                hospitalDropdown.innerHTML = '<option value="">Select Hospital</option>';
+                hospitalDropdown.disabled = true;
+                departmentDropdown.innerHTML = '<option value="">Select Department</option>';
+                departmentDropdown.disabled = true;
+                doctorDropdown.innerHTML = '<option value="">Select Doctor</option>';
+                doctorDropdown.disabled = true;
+            }
+        }
 
-// Fetch distinct cities from the hospitals table
-$sql = "SELECT DISTINCT sehir FROM hastaneler";
-$result = mysqli_query($conn, $sql);
+        function showDepartments() {
+            var hospitalDropdown = document.getElementById("hospital");
+            var departmentDropdown = document.getElementById("department");
+            var selectedHospital = hospitalDropdown.value;
 
-// If there are cities available
-if (mysqli_num_rows($result) > 0) {
-    echo "<form action='yeni_randevu.php' method='POST'>";
-    echo "<label for='city'>Choose a city:</label>";
-    echo "<select name='city' id='city'>";
-    while ($row = mysqli_fetch_assoc($result)) {
-        echo "<option value='" . $row['city'] . "'>" . $row['city'] . "</option>";
-    }
-    echo "</select>";
+            if (selectedHospital !== "") {
+                // Send AJAX request to fetch departments for the selected hospital
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        departmentDropdown.innerHTML = xhr.responseText;
+                        departmentDropdown.disabled = false;
+                        doctorDropdown.disabled = true;
+                    }
+                };
+                xhr.open("GET", "fetch_departments.php?hospital=" + selectedHospital, true);
+                xhr.send();
+            } else {
+                departmentDropdown.innerHTML = '<option value="">Select Department</option>';
+                departmentDropdown.disabled = true;
+                doctorDropdown.innerHTML = '<option value="">Select Doctor</option>';
+                doctorDropdown.disabled = true;
+            }
+        }
 
-    echo "<input type='submit' value='Next'>";
-    echo "</form>";
-} else {
-    echo "No cities available.";
-}
+        function showDoctors() {
+            var hospitalDropdown = document.getElementById("hospital");
+            var departmentDropdown = document.getElementById("department");
+            var doctorDropdown = document.getElementById("doctor");
+            var selectedHospital = hospitalDropdown.value;
+            var selectedDepartment = departmentDropdown.value;
 
-// Close the database connection
-mysqli_close($conn);
+            if (selectedHospital !== "" && selectedDepartment !== "") {
+                // Send AJAX request to fetch doctors for the selected hospital and department
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        doctorDropdown.innerHTML = xhr.responseText;
+                        doctorDropdown.disabled = false;
+                    }
+                };
+                xhr.open("GET", "fetch_doctors.php?hospital=" + selectedHospital + "&department=" + selectedDepartment, true);
+                xhr.send();
+            } else {
+                doctorDropdown.innerHTML = '<option value="">Select Doctor</option>';
+                doctorDropdown.disabled = true;
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <form method="POST" action="">
+        <div class="container">
+            <div class="info">
+                <span>City:</span>
+                <select name="city" id="city" onchange="showHospitals()">
+                    <option value="">Select City</option>
+                    <?php while ($row = mysqli_fetch_assoc($cities_result)) : ?>
+                        <option value="<?php echo $row['sehir']; ?>"><?php echo $row['sehir']; ?></option>
+                    <?php endwhile; ?>
+                </select>
+            </div>
+
+            <div class="info">
+                <span>Hospital:</span>
+                <select name="hospital" id="hospital" onchange="showDepartments()" disabled>
+                    <option value="">Select Hospital</option>
+                </select>
+            </div>
+
+            <div class="info">
+                <span>Department:</span>
+                <select name="department" id="department" onchange="showDoctors()" disabled>
+                    <option value="">Select Department</option>
+                </select>
+            </div>
+
+            <div class="info">
+                <span>Doctor:</span>
+                <select name="doctor" id="doctor" disabled>
+                    <option value="">Select Doctor</option>
+                </select>
+            </div>
+
+            <div class="edit-button">
+                <button type="submit">Save Appointment</button>
+            </div>
+        </div>
+    </form>
+</body>
+
+</html>
