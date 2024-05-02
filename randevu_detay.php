@@ -21,22 +21,7 @@ $sql = "SELECT randevular.*, doktorlar.doktor_isim, doktorlar.departman, doktorl
         WHERE randevular.tc = '$tc'";
 $result = mysqli_query($conn, $sql);
 
-// If there is no information for the logged-in user, display blank space
-if (mysqli_num_rows($result) === 0) {
-    $bilgi = array(
-        'doktor_isim' => '',
-        'departman' => '',
-        'hastane' => '',
-    );
-} else {
-    // Fetch personal information for the logged-in user
-    $bilgi = mysqli_fetch_assoc($result);
-}
-
-mysqli_free_result($result);
-mysqli_close($conn);
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -47,6 +32,7 @@ mysqli_close($conn);
     <title>Randevu Detayı</title>
 
     <style>
+        /* Your CSS styles here */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
@@ -181,12 +167,21 @@ mysqli_close($conn);
             object-fit: cover;
             /* Maintain aspect ratio */
         }
+
+        .appointment-box {
+            background-color: #f5f5f5;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 
 <body>
 
     <nav>
+        <!-- Your navigation bar -->
         <div class="navbar-logo">
             <a href="homepage.php"><img src="resimler/CareConnect.png" alt="Your Logo"></a>
             <span class="navbar-brand">CareConnect</span>
@@ -195,27 +190,46 @@ mysqli_close($conn);
 
             <a href="loginpage.php">Çıkış</a>
         </div>
+
     </nav>
 
     <div class="container">
         <h2>Randevu Detayı</h2>
 
-        <div class="info">
-            <span>Doktor Adı:</span>
-            <p><?php echo htmlspecialchars($bilgi['doktor_isim']); ?></p>
-        </div>
+        <?php
+        // Check if there are any appointments
+        if (mysqli_num_rows($result) > 0) {
+            // Loop through each appointment and display them
+            while ($bilgi = mysqli_fetch_assoc($result)) {
+                echo '<div class="appointment-box">';
+                echo '<div class="info">';
+                echo '<span>Doktor Adı:</span>';
+                echo '<p>' . htmlspecialchars($bilgi['doktor_isim']) . '</p>';
+                echo '</div>';
 
-        <div class="info">
-            <span>Departman:</span>
-            <p><?php echo htmlspecialchars($bilgi['departman']); ?></p>
-        </div>
+                echo '<div class="info">';
+                echo '<span>Departman:</span>';
+                echo '<p>' . htmlspecialchars($bilgi['departman']) . '</p>';
+                echo '</div>';
 
-        <div class="info">
-            <span>Hastane:</span>
-            <p><?php echo htmlspecialchars($bilgi['hastane']); ?></p>
-        </div>
+                echo '<div class="info">';
+                echo '<span>Hastane:</span>';
+                echo '<p>' . htmlspecialchars($bilgi['hastane']) . '</p>';
+                echo '</div>';
+                echo '</div>'; // Close appointment-box
+            }
+        } else {
+            echo '<p>No appointments found.</p>';
+        }
+        ?>
     </div>
 
 </body>
 
 </html>
+
+
+<?php
+mysqli_free_result($result);
+mysqli_close($conn);
+?>

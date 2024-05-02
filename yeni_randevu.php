@@ -17,6 +17,43 @@ if (!$conn) {
 // Fetch cities from the database
 $cities_query = "SELECT DISTINCT sehir FROM hastane";
 $cities_result = mysqli_query($conn, $cities_query);
+
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Check if the appointment form is submitted
+    if (isset($_POST['doctor']) && !empty($_POST['doctor'])) {
+        $tc = $_SESSION['tc']; // Get the logged-in user's TC
+        $doctor_name = $_POST['doctor']; // Get the selected doctor's name from the form
+
+        // Retrieve the doctor's ID based on the selected name
+        $doctor_query = "SELECT doktor_ıd FROM doktorlar WHERE doktor_isim = ?";
+        $stmt = $conn->prepare($doctor_query);
+        $stmt->bind_param("s", $doctor_name);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $doctor_id = $row['doktor_ıd'];
+
+        // Insert the appointment into the 'randevular' table
+        $insert_query = "INSERT INTO randevular (tc, doktor_ıd) VALUES (?, ?)";
+        $stmt = $conn->prepare($insert_query);
+        $stmt->bind_param("ss", $tc, $doctor_id);
+        if ($stmt->execute()) {
+            // Appointment saved successfully, redirect to the appointments page
+            header("Location: randevularım.php");
+            exit();
+        } else {
+            echo 'Error: ' . $stmt->error;
+        }
+    }
+}
+
+
+// Fetch cities from the database
+$cities_query = "SELECT DISTINCT sehir FROM hastane";
+$cities_result = mysqli_query($conn, $cities_query);
+
 ?>
 
 <!DOCTYPE html>
@@ -26,6 +63,144 @@ $cities_result = mysqli_query($conn, $cities_query);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Appointment</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            /* Light background */
+            min-height: 100vh;
+            background-image: url("resimler/bg.png");
+            background-size: cover;
+        }
+
+        nav {
+            background-color: #f5f5f5;
+            /* Light background */
+            color: #2D4059;
+            /* Dark blue */
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            /* Box shadow for separation */
+        }
+
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-logo img {
+            height: 80px;
+            /* Adjust height as needed */
+            vertical-align: middle;
+            margin-right: 10px;
+            /* Add margin to separate logo and text */
+        }
+
+        .navbar-brand {
+            font-size: 24px;
+            /* Adjust font size */
+            font-weight: bold;
+            /* Bold text */
+        }
+
+        .navbar-buttons {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-buttons a {
+            color: #2D4059;
+            /* Dark blue */
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .container {
+            width: 50%;
+            padding: 40px;
+            background-color: #fff;
+            /* White background */
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            /* Box shadow */
+            margin-top: 20px;
+            /* Add margin from navbar */
+            margin: 40px auto 0;
+            /* Add margin from top */
+        }
+
+        h2 {
+            text-align: center;
+            /* Align title to the left */
+            color: #2D4059;
+            /* Dark blue */
+            font-size: 36px;
+            /* Adjust font size */
+            font-weight: bold;
+            /* Bold text */
+            margin-bottom: 20px;
+            /* Add margin for spacing */
+        }
+
+        .info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            /* Align items vertically */
+            margin-bottom: 20px;
+            padding-bottom: 2px;
+            border-bottom: 1px solid #ddd;
+            /* Add border between info sections */
+        }
+
+        .info:last-child {
+            border-bottom: none;
+            /* Remove border from the last info section */
+        }
+
+        .info span {
+            font-weight: bold;
+            margin-right: 10px;
+            /* Add margin between title and info */
+            flex: 1;
+            /* Occupy remaining space */
+            text-align: left;
+            /* Right-align text */
+        }
+
+        .info p {
+            margin: 0;
+            flex: 1;
+            /* Occupy remaining space */
+            text-align: left;
+            /* Right-align text */
+        }
+
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: #ccc;
+            /* Light gray background */
+            margin: 0 auto 20px;
+            /* Center the image and add margin */
+            overflow: hidden;
+            /* Hide overflow content */
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* Maintain aspect ratio */
+        }
+    </style>
+
     <script>
         function showHospitals() {
             var cityDropdown = document.getElementById("city");
