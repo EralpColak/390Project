@@ -39,7 +39,7 @@ $result = mysqli_query($conn, $sql);
             background-color: #f5f5f5;
             /* Light background */
             min-height: 100vh;
-            background-image: url("bg.png");
+            background-image: url("resimler/bg.png");
             background-size: cover;
         }
 
