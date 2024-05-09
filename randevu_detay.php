@@ -39,7 +39,7 @@ $result = mysqli_query($conn, $sql);
             background-color: #f5f5f5;
             /* Light background */
             min-height: 100vh;
-            background-image: url("resimler/bg.png");
+            background-image: url("bg.png");
             background-size: cover;
         }
 
@@ -216,7 +216,13 @@ $result = mysqli_query($conn, $sql);
                 echo '<span>Hastane:</span>';
                 echo '<p>' . htmlspecialchars($bilgi['hastane']) . '</p>';
                 echo '</div>';
+
+                echo '<div class="info">';
+                echo '<span>Randevu tarihi:</span>';
+                echo '<p>' . htmlspecialchars($bilgi['tarih']) . '</p>';
+                echo '</div>';
                 echo '</div>'; // Close appointment-box
+
             }
         } else {
             echo '<p>No appointments found.</p>';

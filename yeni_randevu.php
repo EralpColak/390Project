@@ -25,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['doctor']) && !empty($_POST['doctor'])) {
         $tc = $_SESSION['tc']; // Get the logged-in user's TC
         $doctor_name = $_POST['doctor']; // Get the selected doctor's name from the form
+        $appointment_date = $_POST['appointment_date']; // Get the selected appointment date from the form
 
         // Retrieve the doctor's ID based on the selected name
         $doctor_query = "SELECT doktor_ıd FROM doktorlar WHERE doktor_isim = ?";
@@ -36,9 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $doctor_id = $row['doktor_ıd'];
 
         // Insert the appointment into the 'randevular' table
-        $insert_query = "INSERT INTO randevular (tc, doktor_ıd) VALUES (?, ?)";
+        $insert_query = "INSERT INTO randevular (tc, doktor_ıd, tarih) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($insert_query);
-        $stmt->bind_param("ss", $tc, $doctor_id);
+        $stmt->bind_param("sss", $tc, $doctor_id, $appointment_date);
         if ($stmt->execute()) {
             // Appointment saved successfully, redirect to the appointments page
             header("Location: randevularım.php");
@@ -63,7 +64,7 @@ $cities_result = mysqli_query($conn, $cities_query);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yeni Randevu</title>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
         body {
             margin: 0;
@@ -181,30 +182,11 @@ $cities_result = mysqli_query($conn, $cities_query);
             /* Right-align text */
         }
 
-        .profile-image {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background-color: #ccc;
-            /* Light gray background */
-            margin: 0 auto 20px;
-            /* Center the image and add margin */
-            overflow: hidden;
-            /* Hide overflow content */
-        }
-
-        .profile-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            /* Maintain aspect ratio */
-        }
-
         .logolink {
-        text-decoration: none;
-        color: inherit;
-        cursor: pointer;
-    }
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
 
         .edit-button {
             display: flex;
@@ -228,38 +210,47 @@ $cities_result = mysqli_query($conn, $cities_query);
             cursor: pointer;
         }
 
+        /* Custom styles for input and select tags */
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            max-width: 300px;
+            /* Set a maximum width */
+            background-color: #f2f2f2;
+            /* Light gray background */
+            color: #333;
+            /* Dark gray text */
+            font-size: 14px;
+            /* Adjust font size */
+            transition: border-color 0.3s ease;
+            /* Add transition effect */
+        }
 
+        /* Additional styles for submit button */
+        .submit-button {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
 
-    /* Custom styles for input and select tags */
-    input[type="text"],
-    select {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-        max-width: 300px; /* Set a maximum width */
-        background-color: #f2f2f2; /* Light gray background */
-        color: #333; /* Dark gray text */
-        font-size: 14px; /* Adjust font size */
-        transition: border-color 0.3s ease; /* Add transition effect */
-    }
-
-    /* Additional styles for submit button */
-    .submit-button {
-        display: flex;
-        justify-content: center;
-        margin-top: 20px;
-    }
-
-    input[type="text"]:focus,
-    select:focus {
-        outline: none; /* Remove default focus outline */
-        border-color: #2D4059; /* Dark blue border color on focus */
-        box-shadow: 0 0 5px rgba(45, 64, 89, 0.3); /* Add box shadow on focus */
-    }
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            /* Remove default focus outline */
+            border-color: #2D4059;
+            /* Dark blue border color on focus */
+            box-shadow: 0 0 5px rgba(45, 64, 89, 0.3);
+            /* Add box shadow on focus */
+        }
     </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
     <script>
         function showHospitals() {
             var cityDropdown = document.getElementById("city");
@@ -289,6 +280,10 @@ $cities_result = mysqli_query($conn, $cities_query);
                 doctorDropdown.innerHTML = '<option value="">Select Doctor</option>';
                 doctorDropdown.disabled = true;
             }
+        }
+
+        function showSuccessMessage() {
+            alert("Randevunuz başarıyla oluşturuldu");
         }
 
         function showDepartments() {
@@ -322,6 +317,7 @@ $cities_result = mysqli_query($conn, $cities_query);
             var doctorDropdown = document.getElementById("doctor");
             var selectedHospital = hospitalDropdown.value;
             var selectedDepartment = departmentDropdown.value;
+            var appointmentDateInput = document.getElementById('appointment_date');
 
             if (selectedHospital !== "" && selectedDepartment !== "") {
                 // Send AJAX request to fetch doctors for the selected hospital and department
@@ -330,6 +326,15 @@ $cities_result = mysqli_query($conn, $cities_query);
                     if (xhr.readyState === 4 && xhr.status === 200) {
                         doctorDropdown.innerHTML = xhr.responseText;
                         doctorDropdown.disabled = false;
+                        // Enable appointment date input field
+                        appointmentDateInput.disabled = false;
+
+                        // Initialize Flatpickr for the appointment date input field
+                        flatpickr('#appointment_date', {
+                            enableTime: false, // Disable time selection
+                            dateFormat: "Y-m-d", // Date format
+                            minDate: "today" // Minimum selectable date (today or later)
+                        });
                     }
                 };
                 xhr.open("GET", "fetch_doctors.php?hospital=" + selectedHospital + "&department=" + selectedDepartment, true);
@@ -337,12 +342,45 @@ $cities_result = mysqli_query($conn, $cities_query);
             } else {
                 doctorDropdown.innerHTML = '<option value="">Select Doctor</option>';
                 doctorDropdown.disabled = true;
+                // Disable appointment date input field if doctor is not selected
+                appointmentDateInput.disabled = true;
             }
+        }
+
+        // Initialize Flatpickr for the appointment date input field
+        flatpickr('#appointment_date', {
+            enableTime: false, // Disable time selection
+            dateFormat: "Y-m-d", // Date format
+            minDate: "today" // Minimum selectable date (today or later)
+        });
+
+        function enableDateInput() {
+            var appointmentDateInput = document.getElementById('appointment_date');
+            appointmentDateInput.disabled = false;
+
+            // Initialize Flatpickr
+            flatpickr('#appointment_date', {
+                enableTime: false, // Disable time selection
+                dateFormat: "Y-m-d", // Date format
+                minDate: "today" // Minimum selectable date (today or later)
+            });
         }
     </script>
 </head>
 
 <body>
+    <nav>
+
+        <div class="navbar-logo">
+            <a href="homepage.php"><img src="resimler/CareConnect.png" alt="Your Logo"></a>
+            <span class="navbar-brand">CareConnect</span>
+        </div>
+        <div class="navbar-buttons">
+
+            <a href="loginpage.php">Çıkış</a>
+        </div>
+
+    </nav>
     <form method="POST" action="">
         <div class="container">
             <div class="info">
@@ -376,11 +414,21 @@ $cities_result = mysqli_query($conn, $cities_query);
                 </select>
             </div>
 
-            <div class="edit-button">
-                <button type="submit">Kaydet</button>
+            <div class="info">
+                <span>Randevu Tarihi:</span>
+                <input type="text" id="appointment_date" name="appointment_date" placeholder="Randevu Tarihini Seçin" required disabled>
             </div>
+    </form>
+
+    <form method="POST" action="" onsubmit="showSuccessMessage()">
+
+        <div class="edit-button">
+            <button type="submit">Kaydet</button>
         </div>
     </form>
+    </div>
+
+
 </body>
 
 </html>
