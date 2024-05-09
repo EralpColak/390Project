@@ -192,6 +192,74 @@ mysqli_close($conn);
             object-fit: cover;
             /* Maintain aspect ratio */
         }
+
+        .logolink {
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .edit-button {
+            display: flex;
+            justify-content: center;
+            /* Center the button */
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 8px;
+            background-color: #2D4059;
+            /* Dark blue */
+            color: #fff;
+            /* White text */
+            font-size: 16px;
+            /* Adjust font size */
+            font-weight: bold;
+            /* Bold text */
+            cursor: pointer;
+        }
+
+
+
+        /* Custom styles for input and select tags */
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            max-width: 300px;
+            /* Set a maximum width */
+            background-color: #f2f2f2;
+            /* Light gray background */
+            color: #333;
+            /* Dark gray text */
+            font-size: 14px;
+            /* Adjust font size */
+            transition: border-color 0.3s ease;
+            /* Add transition effect */
+        }
+
+        /* Additional styles for submit button */
+        .submit-button {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            /* Remove default focus outline */
+            border-color: #2D4059;
+            /* Dark blue border color on focus */
+            box-shadow: 0 0 5px rgba(45, 64, 89, 0.3);
+            /* Add box shadow on focus */
+        }
     </style>
     <script>
         function submitForm() {
@@ -202,8 +270,18 @@ mysqli_close($conn);
 </head>
 
 <body>
+    <nav>
+        <div class="navbar-logo">
+            <a href="homepage.php"><img src="resimler/CareConnect.png" alt="Your Logo"></a>
+            <a href="homepage.php" class="logolink"><span class="navbar-brand">CareConnect</span></a>
+        </div>
+        <div class="navbar-buttons">
+            <a href="loginpage.php">Çıkış</a>
+        </div>
+    </nav>
     <form id="updateForm" method="POST" action="">
         <div class="container">
+            <h2>Kişisel Bilgilerim</h2>
             <div class="info">
                 <span>Ad:</span>
                 <input type="text" value="<?php echo htmlspecialchars($bilgiler['isim']); ?>" name="isim">
@@ -233,18 +311,19 @@ mysqli_close($conn);
                 </select>
             </div>
             <div class="info">
-                <span>Adres</span>
+                <span>Adres:</span>
                 <input type="text" value="<?php echo htmlspecialchars($bilgiler['adres']); ?>" name="adres">
             </div>
             <div class="info">
-                <span>Aile hekimi</span>
+                <span>Aile hekimi:</span>
                 <input type="text" value="<?php echo htmlspecialchars($bilgiler['aile_hekimi']); ?>" name="aile_hekimi">
+            </div>
+            <div class="edit-button">
+                <button type="button" onclick="submitForm()">Kaydet</button>
             </div>
         </div>
 
-        <div class="edit-button">
-            <button type="button" onclick="submitForm()">Kaydet</button>
-        </div>
+
     </form>
 </body>
 

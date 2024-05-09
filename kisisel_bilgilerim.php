@@ -181,6 +181,38 @@ mysqli_close($conn);
             object-fit: cover;
             /* Maintain aspect ratio */
         }
+
+        .logolink {
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .edit-button {
+            display: inline-block;
+            margin-right: 10px;
+            padding: 10px;
+            background-color: #2D4059;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .edit-button:hover {
+            background-color: #384B63;
+        }
+
+        .edit-button a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .logolink {
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -189,7 +221,7 @@ mysqli_close($conn);
     <nav>
         <div class="navbar-logo">
             <a href="homepage.php"><img src="resimler/CareConnect.png" alt="Your Logo"></a>
-            <span class="navbar-brand">CareConnect</span>
+            <a href="homepage.php" class="logolink"><span class="navbar-brand">CareConnect</span></a>
         </div>
         <div class="navbar-buttons">
             <a href="loginpage.php">Çıkış</a>

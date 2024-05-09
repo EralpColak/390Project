@@ -134,14 +134,14 @@
         </div>
     </nav>
 
-    <h2>Ana Sayfa</h2> <!-- Changed h3 to h2 -->
+    <h2>Ana Sayfa</h2>
 
     <div class="container">
         <a href="kisisel_bilgilerim.php" class="card">Kişisel Bilgilerim</a>
         <a href="" class="card">Tahlillerim</a>
         <a href="randevularım.php" class="card">Randevularım</a>
         <a href="page4.html" class="card">Hastalıklarım</a>
-        <a href="page5.html" class="card" style="background-color: #2D4059;">Neyim Var ?</a>
+        <a href="neyimvar.php" class="card" style="background-color: #2D4059;">Neyim Var ?</a>
     </div>
 
 </body>

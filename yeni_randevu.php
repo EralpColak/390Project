@@ -284,6 +284,15 @@ $cities_result = mysqli_query($conn, $cities_query);
 </head>
 
 <body>
+    <nav>
+        <div class="navbar-logo">
+            <a href="homepage.php"><img src="resimler/CareConnect.png" alt="Your Logo"></a>
+            <a href="homepage.php" class="logolink"><span class="navbar-brand">CareConnect</span></a>
+        </div>
+        <div class="navbar-buttons">
+            <a href="loginpage.php">Çıkış</a>
+        </div>
+    </nav>
     <form method="POST" action="">
         <div class="container">
             <div class="info">
