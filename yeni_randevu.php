@@ -62,7 +62,7 @@ $cities_result = mysqli_query($conn, $cities_query);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Appointment</title>
+    <title>Yeni Randevu</title>
 
     <style>
         body {
@@ -199,7 +199,119 @@ $cities_result = mysqli_query($conn, $cities_query);
             object-fit: cover;
             /* Maintain aspect ratio */
         }
+
+        .logolink {
+        text-decoration: none;
+        color: inherit;
+        cursor: pointer;
+    }
+
+        .edit-button {
+            display: flex;
+            justify-content: center;
+            /* Center the button */
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 8px;
+            background-color: #2D4059;
+            /* Dark blue */
+            color: #fff;
+            /* White text */
+            font-size: 16px;
+            /* Adjust font size */
+            font-weight: bold;
+            /* Bold text */
+            cursor: pointer;
+        }
+
+
+
+    /* Custom styles for input and select tags */
+    input[type="text"],
+    select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        max-width: 300px; /* Set a maximum width */
+        background-color: #f2f2f2; /* Light gray background */
+        color: #333; /* Dark gray text */
+        font-size: 14px; /* Adjust font size */
+        transition: border-color 0.3s ease; /* Add transition effect */
+    }
+
+    /* Additional styles for submit button */
+    .submit-button {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    input[type="text"]:focus,
+    select:focus {
+        outline: none; /* Remove default focus outline */
+        border-color: #2D4059; /* Dark blue border color on focus */
+        box-shadow: 0 0 5px rgba(45, 64, 89, 0.3); /* Add box shadow on focus */
+    }
     </style>
+
+   
+</head>
+
+<body>
+    <nav>
+        <div class="navbar-logo">
+            <a href="homepage.php"><img src="resimler/CareConnect.png" alt="Your Logo"></a>
+            <a href="homepage.php" class="logolink"><span class="navbar-brand">CareConnect</span></a>
+        </div>
+        <div class="navbar-buttons">
+            <a href="loginpage.php">Çıkış</a>
+        </div>
+    </nav>
+    <form method="POST" action="">
+        <div class="container">
+            <div class="info">
+                <span>Şehir:</span>
+                <select name="city" id="city" onchange="showHospitals()">
+                    <option value="">Şehir Seç</option>
+                    <?php while ($row = mysqli_fetch_assoc($cities_result)) : ?>
+                        <option value="<?php echo $row['sehir']; ?>"><?php echo $row['sehir']; ?></option>
+                    <?php endwhile; ?>
+                </select>
+            </div>
+
+            <div class="info">
+                <span>Hastane:</span>
+                <select name="hospital" id="hospital" onchange="showDepartments()">
+                    <option value="">Hastane Seç</option>
+                </select>
+            </div>
+
+            <div class="info">
+                <span>Departman:</span>
+                <select name="department" id="department" onchange="showDoctors()">
+                    <option value="">Departman Seç</option>
+                </select>
+            </div>
+
+            <div class="info">
+                <span>Doktor::</span>
+                <select name="doctor" id="doctor">
+                    <option value="">Doktor Seç</option>
+                </select>
+            </div>
+
+            <div class="edit-button">
+                <button type="submit">Kaydet</button>
+            </div>
+        </div>
+    </form>
 
     <script>
         function showHospitals() {
@@ -281,56 +393,6 @@ $cities_result = mysqli_query($conn, $cities_query);
             }
         }
     </script>
-</head>
-
-<body>
-    <nav>
-        <div class="navbar-logo">
-            <a href="homepage.php"><img src="resimler/CareConnect.png" alt="Your Logo"></a>
-            <a href="homepage.php" class="logolink"><span class="navbar-brand">CareConnect</span></a>
-        </div>
-        <div class="navbar-buttons">
-            <a href="loginpage.php">Çıkış</a>
-        </div>
-    </nav>
-    <form method="POST" action="">
-        <div class="container">
-            <div class="info">
-                <span>City:</span>
-                <select name="city" id="city" onchange="showHospitals()">
-                    <option value="">Select City</option>
-                    <?php while ($row = mysqli_fetch_assoc($cities_result)) : ?>
-                        <option value="<?php echo $row['sehir']; ?>"><?php echo $row['sehir']; ?></option>
-                    <?php endwhile; ?>
-                </select>
-            </div>
-
-            <div class="info">
-                <span>Hospital:</span>
-                <select name="hospital" id="hospital" onchange="showDepartments()" disabled>
-                    <option value="">Select Hospital</option>
-                </select>
-            </div>
-
-            <div class="info">
-                <span>Department:</span>
-                <select name="department" id="department" onchange="showDoctors()" disabled>
-                    <option value="">Select Department</option>
-                </select>
-            </div>
-
-            <div class="info">
-                <span>Doctor:</span>
-                <select name="doctor" id="doctor" disabled>
-                    <option value="">Select Doctor</option>
-                </select>
-            </div>
-
-            <div class="edit-button">
-                <button type="submit">Save Appointment</button>
-            </div>
-        </div>
-    </form>
 </body>
 
 </html>
