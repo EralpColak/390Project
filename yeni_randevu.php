@@ -260,59 +260,6 @@ $cities_result = mysqli_query($conn, $cities_query);
         box-shadow: 0 0 5px rgba(45, 64, 89, 0.3); /* Add box shadow on focus */
     }
     </style>
-
-   
-</head>
-
-<body>
-    <nav>
-        <div class="navbar-logo">
-            <a href="homepage.php"><img src="resimler/CareConnect.png" alt="Your Logo"></a>
-            <a href="homepage.php" class="logolink"><span class="navbar-brand">CareConnect</span></a>
-        </div>
-        <div class="navbar-buttons">
-            <a href="loginpage.php">Çıkış</a>
-        </div>
-    </nav>
-    <form method="POST" action="">
-        <div class="container">
-            <div class="info">
-                <span>Şehir:</span>
-                <select name="city" id="city" onchange="showHospitals()">
-                    <option value="">Şehir Seç</option>
-                    <?php while ($row = mysqli_fetch_assoc($cities_result)) : ?>
-                        <option value="<?php echo $row['sehir']; ?>"><?php echo $row['sehir']; ?></option>
-                    <?php endwhile; ?>
-                </select>
-            </div>
-
-            <div class="info">
-                <span>Hastane:</span>
-                <select name="hospital" id="hospital" onchange="showDepartments()">
-                    <option value="">Hastane Seç</option>
-                </select>
-            </div>
-
-            <div class="info">
-                <span>Departman:</span>
-                <select name="department" id="department" onchange="showDoctors()">
-                    <option value="">Departman Seç</option>
-                </select>
-            </div>
-
-            <div class="info">
-                <span>Doktor::</span>
-                <select name="doctor" id="doctor">
-                    <option value="">Doktor Seç</option>
-                </select>
-            </div>
-
-            <div class="edit-button">
-                <button type="submit">Kaydet</button>
-            </div>
-        </div>
-    </form>
-
     <script>
         function showHospitals() {
             var cityDropdown = document.getElementById("city");
@@ -393,6 +340,47 @@ $cities_result = mysqli_query($conn, $cities_query);
             }
         }
     </script>
+</head>
+
+<body>
+    <form method="POST" action="">
+        <div class="container">
+            <div class="info">
+                <span>Şehir:</span>
+                <select name="city" id="city" onchange="showHospitals()">
+                    <option value="">Şehir Seç</option>
+                    <?php while ($row = mysqli_fetch_assoc($cities_result)) : ?>
+                        <option value="<?php echo $row['sehir']; ?>"><?php echo $row['sehir']; ?></option>
+                    <?php endwhile; ?>
+                </select>
+            </div>
+
+            <div class="info">
+                <span>Hastane:</span>
+                <select name="hospital" id="hospital" onchange="showDepartments()" disabled>
+                    <option value="">Hastane Seç</option>
+                </select>
+            </div>
+
+            <div class="info">
+                <span>Departman:</span>
+                <select name="department" id="department" onchange="showDoctors()" disabled>
+                    <option value="">Departman Seç</option>
+                </select>
+            </div>
+
+            <div class="info">
+                <span>Doktor:</span>
+                <select name="doctor" id="doctor" disabled>
+                    <option value="">Doktor Seç</option>
+                </select>
+            </div>
+
+            <div class="edit-button">
+                <button type="submit">Kaydet</button>
+            </div>
+        </div>
+    </form>
 </body>
 
 </html>
