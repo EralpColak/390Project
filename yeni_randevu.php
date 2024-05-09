@@ -282,6 +282,10 @@ $cities_result = mysqli_query($conn, $cities_query);
             }
         }
 
+        function goBack() {
+            window.location.href = 'randevularım.php';
+        }
+
         function showSuccessMessage() {
             alert("Randevunuz başarıyla oluşturuldu");
         }
@@ -424,6 +428,7 @@ $cities_result = mysqli_query($conn, $cities_query);
 
         <div class="edit-button">
             <button type="submit">Kaydet</button>
+            <button type="button" onclick="goBack()">Geri</button>
         </div>
     </form>
     </div>

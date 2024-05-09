@@ -266,7 +266,13 @@ mysqli_close($conn);
             // Submit the form
             document.getElementById("updateForm").submit();
         }
+
+        function goBack() {
+            window.location.href = 'kisisel_bilgilerim.php';
+        }
     </script>
+
+
 </head>
 
 <body>
@@ -320,7 +326,9 @@ mysqli_close($conn);
             </div>
             <div class="edit-button">
                 <button type="button" onclick="submitForm()">Kaydet</button>
+                <button type="button" onclick="goBack()">Geri</button>
             </div>
+
         </div>
 
 

@@ -175,7 +175,34 @@ $result = mysqli_query($conn, $sql);
             border-radius: 10px;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
         }
+
+        .edit-button {
+            display: flex;
+            justify-content: center;
+            /* Center the button */
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 8px;
+            background-color: #2D4059;
+            /* Dark blue */
+            color: #fff;
+            /* White text */
+            font-size: 16px;
+            /* Adjust font size */
+            font-weight: bold;
+            /* Bold text */
+            cursor: pointer;
+        }
     </style>
+    <script>
+        function goBack() {
+            window.location.href = 'randevularım.php';
+        }
+    </script>
 </head>
 
 <body>
@@ -228,6 +255,9 @@ $result = mysqli_query($conn, $sql);
             echo '<p>No appointments found.</p>';
         }
         ?>
+        <div class="edit-button">
+            <button type="button" onclick="goBack()">Geri</button>
+        </div>
     </div>
 
 </body>
