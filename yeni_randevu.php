@@ -282,14 +282,6 @@ $cities_result = mysqli_query($conn, $cities_query);
             }
         }
 
-        function goBack() {
-            window.location.href = 'randevularım.php';
-        }
-
-        function showSuccessMessage() {
-            alert("Randevunuz başarıyla oluşturuldu");
-        }
-
         function showDepartments() {
             var hospitalDropdown = document.getElementById("hospital");
             var departmentDropdown = document.getElementById("department");
@@ -369,6 +361,15 @@ $cities_result = mysqli_query($conn, $cities_query);
                 minDate: "today" // Minimum selectable date (today or later)
             });
         }
+
+
+        function goBack() {
+            window.location.href = 'randevularım.php';
+        }
+
+        function showSuccessMessage() {
+            alert("Randevunuz başarıyla oluşturuldu");
+        }
     </script>
 </head>
 
@@ -422,18 +423,18 @@ $cities_result = mysqli_query($conn, $cities_query);
                 <span>Randevu Tarihi:</span>
                 <input type="text" id="appointment_date" name="appointment_date" placeholder="Randevu Tarihini Seçin" required disabled>
             </div>
-    </form>
 
-    <form method="POST" action="" onsubmit="showSuccessMessage()">
+            <form method="POST" action="" onsubmit="showSuccessMessage()">
 
-        <div class="edit-button">
-            <button type="submit">Kaydet</button>
-            <button type="button" onclick="goBack()">Geri</button>
+                <div class="edit-button">
+                    <button type="submit">Kaydet</button>
+                    <button type="button" onclick="goBack()">Geri</button>
+                </div>
+            </form>
         </div>
+
+
     </form>
-    </div>
-
-
 </body>
 
 </html>

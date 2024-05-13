@@ -21,6 +21,31 @@ $sql = "SELECT randevular.*, doktorlar.doktor_isim, doktorlar.departman, doktorl
         WHERE randevular.tc = '$tc'";
 $result = mysqli_query($conn, $sql);
 
+// PHP code for deleting appointments
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['randevu_id'])) {
+    // Database connection
+    $conn = mysqli_connect('localhost', 'root', '', 'database_390');
+    if (!$conn) {
+        echo 'Connection error: ' . mysqli_connect_error();
+    }
+
+    $randevu_id = $_POST['randevu_id'];
+
+    // SQL to delete appointment
+    $sql = "DELETE FROM randevular WHERE randevu_id = $randevu_id";
+
+    // Execute the query
+    if (mysqli_query($conn, $sql)) {
+        // Appointment deleted successfully
+        echo 'success';
+    } else {
+        // Failed to delete appointment
+        echo 'Error deleting appointment: ' . mysqli_error($conn);
+    }
+
+    // Close database connection
+    mysqli_close($conn);
+}
 ?>
 
 <!DOCTYPE html>
@@ -32,14 +57,13 @@ $result = mysqli_query($conn, $sql);
     <title>Randevu Detayı</title>
 
     <style>
-        /* Your CSS styles here */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
             /* Light background */
             min-height: 100vh;
-            background-image: url("bg.png");
+            background-image: url("resimler/bg.png");
             background-size: cover;
         }
 
@@ -149,31 +173,10 @@ $result = mysqli_query($conn, $sql);
             /* Right-align text */
         }
 
-        .profile-image {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background-color: #ccc;
-            /* Light gray background */
-            margin: 0 auto 20px;
-            /* Center the image and add margin */
-            overflow: hidden;
-            /* Hide overflow content */
-        }
-
-        .profile-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            /* Maintain aspect ratio */
-        }
-
-        .appointment-box {
-            background-color: #f5f5f5;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        .logolink {
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
         }
 
         .edit-button {
@@ -197,12 +200,98 @@ $result = mysqli_query($conn, $sql);
             /* Bold text */
             cursor: pointer;
         }
+
+        /* Custom styles for input and select tags */
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            max-width: 300px;
+            /* Set a maximum width */
+            background-color: #f2f2f2;
+            /* Light gray background */
+            color: #333;
+            /* Dark gray text */
+            font-size: 14px;
+            /* Adjust font size */
+            transition: border-color 0.3s ease;
+            /* Add transition effect */
+        }
+
+        /* Additional styles for submit button */
+        .submit-button {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            /* Remove default focus outline */
+            border-color: #2D4059;
+            /* Dark blue border color on focus */
+            box-shadow: 0 0 5px rgba(45, 64, 89, 0.3);
+            /* Add box shadow on focus */
+        }
+
+
+
+        .appointment-box {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #fff;
+        }
+
+        .appointment-details {
+            margin-bottom: 10px;
+        }
+
+        .delete-button {
+            text-align: right;
+        }
     </style>
+
+    <script>
+        // JavaScript function to handle AJAX request for deleting appointments
+        function deleteAppointment(appointmentId) {
+            if (confirm('Are you sure you want to delete this appointment?')) {
+                // Create a new XMLHttpRequest object
+                var xhr = new XMLHttpRequest();
+
+                // Configure the request
+                xhr.open('POST', 'randevu_detay.php', true);
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+                // Define what happens on successful data submission
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        // Reload the page after deletion
+                        window.location.reload();
+                    } else {
+                        alert('Error deleting appointment. Please try again.'); // Show error message
+                    }
+                };
+
+                // Send the request with the appointment ID as data
+                xhr.send('randevu_id=' + appointmentId);
+            }
+        }
+    </script>
     <script>
         function goBack() {
             window.location.href = 'randevularım.php';
         }
     </script>
+
+
+
 </head>
 
 <body>
@@ -228,7 +317,11 @@ $result = mysqli_query($conn, $sql);
         if (mysqli_num_rows($result) > 0) {
             // Loop through each appointment and display them
             while ($bilgi = mysqli_fetch_assoc($result)) {
-                echo '<div class="appointment-box">';
+                // Start appointment box
+                echo '<div class="appointment-box" id="appointment-box-' . $bilgi['randevu_id'] . '">';
+
+                // Individual appointment details
+                echo '<div class="appointment-details">';
                 echo '<div class="info">';
                 echo '<span>Doktor Adı:</span>';
                 echo '<p>' . htmlspecialchars($bilgi['doktor_isim']) . '</p>';
@@ -244,12 +337,19 @@ $result = mysqli_query($conn, $sql);
                 echo '<p>' . htmlspecialchars($bilgi['hastane']) . '</p>';
                 echo '</div>';
 
+                // Display the date and time
                 echo '<div class="info">';
-                echo '<span>Randevu tarihi:</span>';
+                echo '<span>Randevu Tarihi:</span>';
                 echo '<p>' . htmlspecialchars($bilgi['tarih']) . '</p>';
                 echo '</div>';
-                echo '</div>'; // Close appointment-box
+                echo '</div>'; // End appointment-details
 
+                // Delete button
+                echo '<div class="delete-button">';
+                echo '<button onclick="deleteAppointment(' . $bilgi['randevu_id'] . ')">Randevuyu Sil</button>';
+                echo '</div>'; // End delete-button
+
+                echo '</div>'; // End appointment-box
             }
         } else {
             echo '<p>No appointments found.</p>';
@@ -259,13 +359,6 @@ $result = mysqli_query($conn, $sql);
             <button type="button" onclick="goBack()">Geri</button>
         </div>
     </div>
-
 </body>
 
 </html>
-
-
-<?php
-mysqli_free_result($result);
-mysqli_close($conn);
-?>

@@ -53,6 +53,7 @@ echo "</script>";
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Neyim Var?</title>
@@ -155,47 +156,47 @@ echo "</script>";
         }
 
         #submit-button:active {
-            background-color: #1A2C40; /* Change the background color when clicked */
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); /* Change the box shadow when clicked */
+            background-color: #1A2C40;
+            /* Change the background color when clicked */
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            /* Change the box shadow when clicked */
         }
-   
+
         #question-container {
             margin-bottom: 10px;
         }
 
 
         .logolink {
-        text-decoration: none;
-        color: inherit;
-        cursor: pointer;
-    }
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
 
-    /* Add your desired styling for the departman-names class */
-    .departman-names {
-    font-weight: bold;
-    color: #A91D3A;
-    font-size: 1.1em;
-    /* You can add more styles as needed */
-    }
-    .submit{
-        text-decoration: none;
-        color: inherit;
-    }
-    .back{
-        margin-left: 82%;
-    }
+        /* Add your desired styling for the departman-names class */
+        .departman-names {
+            font-weight: bold;
+            color: #A91D3A;
+            font-size: 1.1em;
+            /* You can add more styles as needed */
+        }
 
+        .submit {
+            text-decoration: none;
+            color: inherit;
+        }
 
-
-        
+        .back {
+            margin-left: 82%;
+        }
     </style>
 </head>
 
 <body>
-<nav>
+    <nav>
         <div class="navbar-logo">
             <a href="homepage.php"><img src="resimler/CareConnect.png" alt="Your Logo"></a>
-            <a href="homepage.php" class="logolink" ><span class="navbar-brand">CareConnect</span></a>
+            <a href="homepage.php" class="logolink"><span class="navbar-brand">CareConnect</span></a>
         </div>
         <div class="navbar-buttons">
             <a href="loginpage.php">Çıkış</a>
@@ -205,16 +206,16 @@ echo "</script>";
 
     <h2>Neyim Var?</h2>
     <div class="container">
-    <div id="question-container"></div>
-    <form id="yesno-form">
-        <button id="yes-button" type="button">Yes</button>
-        <button id="no-button" type="button">No</button>
-    </form>
-    <div id="response-display"></div>
-    <a class="submit" href="yeni_randevu.php"><button id="submit-button">Randevu al</button></a>
-    <a class="submit" href="homepage.php"><button class= "back" >Geri Dön</button></a>
+        <div id="question-container"></div>
+        <form id="yesno-form">
+            <button id="yes-button" type="button">Yes</button>
+            <button id="no-button" type="button">No</button>
+        </form>
+        <div id="response-display"></div>
+        <a class="submit" href="yeni_randevu.php"><button id="submit-button">Randevu al</button></a>
+        <a class="submit" href="homepage.php"><button class="back">Geri Dön</button></a>
     </div>
-    
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         // Initialize the current question index and an array to store "Yes" responses
@@ -289,11 +290,11 @@ echo "</script>";
         }
 
         // Add event listeners to the buttons
-        yesButton.addEventListener("click", function () {
+        yesButton.addEventListener("click", function() {
             handleUserResponse(true);
         });
 
-        noButton.addEventListener("click", function () {
+        noButton.addEventListener("click", function() {
             handleUserResponse(false);
         });
 
@@ -303,7 +304,9 @@ echo "</script>";
             $.ajax({
                 url: 'insert_data.php',
                 method: 'POST',
-                data: { yesResponses: yesResponses },
+                data: {
+                    yesResponses: yesResponses
+                },
                 success: function(response) {
                     // Handle the response from the PHP script
                     console.log(response);
@@ -324,7 +327,6 @@ echo "</script>";
 
         // Initialize by showing the first question
         showQuestion();
-
     </script>
 </body>
 
