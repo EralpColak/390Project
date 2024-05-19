@@ -42,6 +42,12 @@
             /* Add margin to separate logo and text */
         }
 
+        .logolink {
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
         .navbar-brand {
             font-size: 24px;
             /* Adjust font size */
@@ -120,12 +126,6 @@
             /* Bold text */
         }
 
-        .logolink {
-            text-decoration: none;
-            color: inherit;
-            cursor: pointer;
-        }
-
         @media (max-width: 768px) {
             .card {
                 font-size: 16px;
@@ -147,7 +147,7 @@
     <nav>
         <div class="navbar-logo">
             <a href="homepage.php"><img src="resimler/CareConnect.png" alt="Your Logo"></a>
-            <a href="homepage.php" class="logolink"><span class="navbar-brand">CareConnect</span></a>
+            <span class="navbar-brand"><a href="homepage.php" class="logolink">CareConnect</a></span>
         </div>
         <div class="navbar-buttons">
 
@@ -155,12 +155,12 @@
         </div>
     </nav>
 
-    <h2>Randevularım</h2>
+    <h2>Tahlillerim</h2>
 
     <div class="container">
 
-        <a href="yeni_randevu.php" class="card">Yeni Randevu</a>
-        <a href="randevu_detay.php" class="card">Randevularım</a>
+        <a href="tahlil_listesi.php" class="card">Tahliller</a>
+        <a href="goruntu_listesi.php" class="card">Görüntülemeler</a>
 
     </div>
 

@@ -300,7 +300,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['randevu_id'])) {
         <!-- Your navigation bar -->
         <div class="navbar-logo">
             <a href="homepage.php"><img src="resimler/CareConnect.png" alt="Your Logo"></a>
-            <span class="navbar-brand">CareConnect</span>
+            <a href="homepage.php" class="logolink"><span class="navbar-brand">CareConnect</span></a>
+
         </div>
         <div class="navbar-buttons">
 

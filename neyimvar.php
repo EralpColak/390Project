@@ -56,9 +56,10 @@ echo "</script>";
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Neyim Var?</title>
     <style>
-        /* Add your CSS styling here */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
@@ -66,6 +67,7 @@ echo "</script>";
             min-height: 100vh;
             background-image: url("resimler/bg.png");
             background-size: cover;
+            background-position: center;
         }
 
         nav {
@@ -157,15 +159,12 @@ echo "</script>";
 
         #submit-button:active {
             background-color: #1A2C40;
-            /* Change the background color when clicked */
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-            /* Change the box shadow when clicked */
         }
 
         #question-container {
             margin-bottom: 10px;
         }
-
 
         .logolink {
             text-decoration: none;
@@ -173,12 +172,10 @@ echo "</script>";
             cursor: pointer;
         }
 
-        /* Add your desired styling for the departman-names class */
         .departman-names {
             font-weight: bold;
             color: #A91D3A;
             font-size: 1.1em;
-            /* You can add more styles as needed */
         }
 
         .submit {
@@ -188,6 +185,79 @@ echo "</script>";
 
         .back {
             margin-left: 82%;
+        }
+
+        @media (max-width: 768px) {
+            .navbar-logo img {
+                height: 60px;
+            }
+
+            .navbar-brand {
+                font-size: 20px;
+            }
+
+            .container {
+                width: 80%;
+                padding: 20px;
+                margin: 20px auto;
+            }
+
+            h2 {
+                font-size: 28px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+
+            #submit-button {
+                font-size: 14px;
+                padding: 12px 24px;
+            }
+
+            .back {
+                margin-left: 60%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-logo img {
+                height: 50px;
+            }
+
+            .navbar-brand {
+                font-size: 18px;
+            }
+
+            .navbar-buttons a {
+                font-size: 14px;
+                margin: 0 5px;
+            }
+
+            .container {
+                width: 80%;
+                padding: 15px;
+                margin: 15px auto;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            button {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+
+            #submit-button {
+                font-size: 12px;
+                padding: 10px 20px;
+            }
+
+            .back {
+                margin-left: 70%;
+            }
         }
     </style>
 </head>
@@ -203,7 +273,6 @@ echo "</script>";
         </div>
     </nav>
 
-
     <h2>Neyim Var?</h2>
     <div class="container">
         <div id="question-container"></div>
@@ -218,65 +287,48 @@ echo "</script>";
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        // Initialize the current question index and an array to store "Yes" responses
         let currentQuestionIndex = 0;
         let yesResponses = [];
 
-        // Get the buttons
         const yesButton = document.getElementById("yes-button");
         const noButton = document.getElementById("no-button");
-        const submitButton = document.getElementById("submit-button"); // "Randevu al" button
+        const submitButton = document.getElementById("submit-button");
 
-        // Initially hide the submit button
         submitButton.style.display = 'none';
 
-        // Function to display a question with its ID and content
         function showQuestion() {
             const questionContainer = document.getElementById("question-container");
-            // Check if there are questions remaining
             if (currentQuestionIndex < questions.length) {
                 const currentQuestion = questions[currentQuestionIndex];
-                // Display the question ID and content
                 questionContainer.textContent = `${currentQuestion.soru_id} - ${currentQuestion.soru_icerik}`;
-                // Enable the buttons for user interaction
                 yesButton.disabled = false;
                 noButton.disabled = false;
             } else {
-                // All questions have been answered
                 displayDepartmanForYesResponses();
-                // Disable the "Yes" and "No" buttons
                 yesButton.disabled = true;
                 noButton.disabled = true;
-                // Show the "Randevu al" button
                 submitButton.style.display = 'block';
             }
         }
 
-        // Function to handle user response
         function handleUserResponse(isYes) {
             const currentQuestion = questions[currentQuestionIndex];
-            // Add current question's soru_id to the yesResponses array if the user responded "Yes"
             if (isYes) {
                 yesResponses.push(currentQuestion.soru_id);
             }
-            // Move to the next question
             currentQuestionIndex++;
-            // Show the next question
             showQuestion();
         }
 
-        // Function to display department names for "Yes" responses
         function displayDepartmanForYesResponses() {
             const responseDisplay = document.getElementById("response-display");
             const departmanAdlari = [];
 
-            // Check if yesResponses array is empty
             if (yesResponses.length === 0) {
                 responseDisplay.innerHTML = "<span class='departman-names'>Hiçbir departman önerisi bulunamadı.</span>";
-                return; // Exit the function
+                return;
             }
 
-            // Iterate through the yesResponses array and find corresponding departman_adı
             yesResponses.forEach(soru_id => {
                 const departmanAdı = departmanMap[soru_id];
                 if (departmanAdı) {
@@ -284,12 +336,9 @@ echo "</script>";
                 }
             });
 
-            // Display the department names for all "Yes" responses
             responseDisplay.innerHTML = `İsterseniz bu departmanlardan randevu alabilirsiniz: <span class="departman-names">${departmanAdlari.join(', ')}</span>`;
-
         }
 
-        // Add event listeners to the buttons
         yesButton.addEventListener("click", function() {
             handleUserResponse(true);
         });
@@ -298,9 +347,7 @@ echo "</script>";
             handleUserResponse(false);
         });
 
-        // Function to send data to the PHP script using AJAX
         function sendDataToServer() {
-            // Send the `yesResponses` array to the PHP script using AJAX
             $.ajax({
                 url: 'insert_data.php',
                 method: 'POST',
@@ -308,24 +355,18 @@ echo "</script>";
                     yesResponses: yesResponses
                 },
                 success: function(response) {
-                    // Handle the response from the PHP script
                     console.log(response);
                 },
                 error: function(xhr, status, error) {
-                    // Handle the error
                     console.error(error);
                 }
             });
         }
 
-        // Add event listener to the "Randevu al" button to trigger the AJAX call
         submitButton.addEventListener("click", function() {
             sendDataToServer();
         });
 
-
-
-        // Initialize by showing the first question
         showQuestion();
     </script>
 </body>

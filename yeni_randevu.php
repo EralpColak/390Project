@@ -247,6 +247,12 @@ $cities_result = mysqli_query($conn, $cities_query);
             box-shadow: 0 0 5px rgba(45, 64, 89, 0.3);
             /* Add box shadow on focus */
         }
+
+        .logolink {
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
     </style>
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -378,7 +384,8 @@ $cities_result = mysqli_query($conn, $cities_query);
 
         <div class="navbar-logo">
             <a href="homepage.php"><img src="resimler/CareConnect.png" alt="Your Logo"></a>
-            <span class="navbar-brand">CareConnect</span>
+            <a href="homepage.php" class="logolink"><span class="navbar-brand">CareConnect</span></a>
+
         </div>
         <div class="navbar-buttons">
 

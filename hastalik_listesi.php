@@ -13,29 +13,17 @@ if (!$conn) {
     echo 'Connection error: ' . mysqli_connect_error();
 }
 
-// Retrieve personal information for the logged-in user
+// Retrieve diseases for the logged-in user along with doctor information
 $tc = $_SESSION['tc'];
-$sql = "SELECT * FROM kisisel_bilgiler WHERE tc = '$tc'";
-$result = mysqli_query($conn, $sql);
+$query = "
+    SELECT h.hastalik_adi, h.departman_adı, d.doktor_isim, d.departman, d.hastane
+    FROM hastalik_listesi hl
+    JOIN hastaliklar h ON hl.hastalik_id = h.id
+    JOIN doktorlar d ON hl.doktor_id = d.doktor_ıd
+    WHERE hl.tc = '$tc'
+";
+$result = mysqli_query($conn, $query);
 
-// If there is no information for the logged-in user, display blank space
-if (mysqli_num_rows($result) === 0) {
-    $bilgi = array(
-        'tc' => '',
-        'isim' => '',
-        'soyisim' => '',
-        'cinsiyet' => '',
-        'kan_grubu' => '',
-        'adres' => '',
-        'aile_hekimi' => ''
-    );
-} else {
-    // Fetch personal information for the logged-in user
-    $bilgi = mysqli_fetch_assoc($result);
-}
-
-mysqli_free_result($result);
-mysqli_close($conn);
 ?>
 
 <!DOCTYPE html>
@@ -44,9 +32,10 @@ mysqli_close($conn);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kişisel Bilgilerim</title>
+    <title>Hastalıklarım</title>
 
     <style>
+        /* Your CSS styles here */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
@@ -129,7 +118,15 @@ mysqli_close($conn);
             /* Add margin for spacing */
         }
 
-        .info {
+        .disease-box {
+            background-color: #f5f5f5;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .disease-info {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -140,12 +137,12 @@ mysqli_close($conn);
             /* Add border between info sections */
         }
 
-        .info:last-child {
+        .disease-info:last-child {
             border-bottom: none;
             /* Remove border from the last info section */
         }
 
-        .info span {
+        .disease-info span {
             font-weight: bold;
             margin-right: 10px;
             /* Add margin between title and info */
@@ -155,7 +152,7 @@ mysqli_close($conn);
             /* Right-align text */
         }
 
-        .info p {
+        .disease-info p {
             margin: 0;
             flex: 1;
             /* Occupy remaining space */
@@ -163,49 +160,26 @@ mysqli_close($conn);
             /* Right-align text */
         }
 
-        .profile-image {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background-color: #ccc;
-            /* Light gray background */
-            margin: 0 auto 20px;
-            /* Center the image and add margin */
-            overflow: hidden;
-            /* Hide overflow content */
-        }
-
-        .profile-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            /* Maintain aspect ratio */
-        }
-
-        .logolink {
-            text-decoration: none;
-            color: inherit;
-            cursor: pointer;
-        }
-
         .edit-button {
-            display: inline-block;
-            margin-right: 10px;
-            padding: 10px;
-            background-color: #2D4059;
-            color: white;
+            display: flex;
+            justify-content: center;
+            /* Center the button */
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 5px;
             border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .edit-button:hover {
-            background-color: #384B63;
-        }
-
-        .edit-button a {
+            border-radius: 8px;
+            background-color: #2D4059;
+            /* Dark blue */
             color: #fff;
-            text-decoration: none;
+            /* White text */
+            font-size: 16px;
+            /* Adjust font size */
+            font-weight: bold;
+            /* Bold text */
+            cursor: pointer;
         }
 
         .logolink {
@@ -226,58 +200,74 @@ mysqli_close($conn);
             }
         }
     </style>
+    <script>
+        function goBack() {
+            window.location.href = 'homepage.php';
+        }
+    </script>
 </head>
 
 <body>
 
     <nav>
+        <!-- Your navigation bar -->
         <div class="navbar-logo">
             <a href="homepage.php"><img src="resimler/CareConnect.png" alt="Your Logo"></a>
             <a href="homepage.php" class="logolink"><span class="navbar-brand">CareConnect</span></a>
+
         </div>
         <div class="navbar-buttons">
+
             <a href="loginpage.php">Çıkış</a>
         </div>
+
     </nav>
+
     <div class="container">
+        <h2>Hastalıklarım</h2>
 
-        <h2>Kişisel Bilgilerim</h2>
+        <?php
+        // Check if there are any diseases
+        if (mysqli_num_rows($result) > 0) {
+            // Loop through each disease and display them
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo '<div class="disease-box">';
+                echo '<div class="disease-info">';
+                echo '<span>Hastalık Adı:</span>';
+                echo '<p>' . htmlspecialchars($row['hastalik_adi']) . '</p>';
+                echo '</div>';
 
-        <div class="info">
-            <span>T.C.</span>
-            <p><?php echo htmlspecialchars($bilgi['tc']); ?></p>
-        </div>
-        <div class="info">
-            <span>Ad:</span>
-            <p><?php echo htmlspecialchars($bilgi['isim']); ?></p>
-        </div>
-        <div class="info">
-            <span>Soyad:</span>
-            <p><?php echo htmlspecialchars($bilgi['soyisim']); ?></p>
-        </div>
-        <div class="info">
-            <span>Cinsiyet:</span>
-            <p><?php echo htmlspecialchars($bilgi['cinsiyet']); ?></p>
-        </div>
-        <div class="info">
-            <span>Kan Grubu:</span>
-            <p><?php echo htmlspecialchars($bilgi['kan_grubu']); ?></p>
-        </div>
-        <div class="info">
-            <span>Adres:</span>
-            <p><?php echo htmlspecialchars($bilgi['adres']); ?></p>
-        </div>
-        <div class="info">
-            <span>Aile Hekimi:</span>
-            <p><?php echo htmlspecialchars($bilgi['aile_hekimi']); ?></p>
-        </div>
+                echo '<div class="disease-info">';
+                echo '<span>Departman:</span>';
+                echo '<p>' . htmlspecialchars($row['departman_adı']) . '</p>';
+                echo '</div>';
 
-        <!-- Edit button -->
+                echo '<div class="disease-info">';
+                echo '<span>Doktor Adı:</span>';
+                echo '<p>' . htmlspecialchars($row['doktor_isim']) . '</p>';
+                echo '</div>';
+
+                echo '<div class="disease-info">';
+                echo '<span>Hastane:</span>';
+                echo '<p>' . htmlspecialchars($row['hastane']) . '</p>';
+                echo '</div>';
+
+                echo '</div>'; // Close disease-box
+            }
+        } else {
+            echo '<p>Hiçbir hastalık bulunamadı.</p>';
+        }
+        ?>
         <div class="edit-button">
-            <a href="düzenle_bilgiler.php">Düzenle</a>
+            <button type="button" onclick="goBack()">Geri</button>
         </div>
     </div>
 
 </body>
 
 </html>
+
+<?php
+mysqli_free_result($result);
+mysqli_close($conn);
+?>

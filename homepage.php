@@ -118,6 +118,20 @@
             font-weight: bold;
             /* Bold text */
         }
+
+        @media (max-width: 768px) {
+            .card {
+                font-size: 16px;
+            }
+
+            .navbar-logo img {
+                height: 60px;
+            }
+
+            .navbar-brand {
+                font-size: 20px;
+            }
+        }
     </style>
 </head>
 
@@ -138,9 +152,9 @@
 
     <div class="container">
         <a href="kisisel_bilgilerim.php" class="card">Kişisel Bilgilerim</a>
-        <a href="" class="card">Tahlillerim</a>
+        <a href="tahlillerim.php" class="card">Tahlillerim</a>
         <a href="randevularım.php" class="card">Randevularım</a>
-        <a href="page4.html" class="card">Hastalıklarım</a>
+        <a href="hastalik_listesi.php" class="card">Hastalıklarım</a>
         <a href="neyimvar.php" class="card" style="background-color: #2D4059;">Neyim Var ?</a>
     </div>
 
