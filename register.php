@@ -114,7 +114,8 @@
             <h2>Register</h2>
             <form action="includes/register.inc.php" method="post">
                 <label for="tc">T.C.</label>
-                <input type="text" id="tc" name="tc" required>
+                <input type="text" id="tc" name="tc" pattern="\d{11}" maxlength="11" required oninput="validateTC(this)">
+
 
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="pwd" required>
@@ -124,6 +125,11 @@
             </form>
         </div>
     </div>
+    <script>
+        function validateTC(input) {
+            input.value = input.value.replace(/\D/g, '').slice(0, 11);
+        }
+    </script>
 
 </body>
 
