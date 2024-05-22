@@ -10,8 +10,8 @@ CareConnect Health System is an advanced database management system designed to 
 - **Symptom-Based Guidance:** Patients receive suggestions on which department to visit based on their symptoms through a guided questionnaire.
 
 ## Technologies Used
-- **Frontend Development:** Visual Studio 2022 IDE
-- **Backend Development:** phpMyAdmin for database management
+- **Frontend Development:** HTML, CSS, JavaScript
+- **Backend Development:** PHP, phpMyAdmin, MySQL
 
 ## Database Schema
 ### Tables and Relationships
